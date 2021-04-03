@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Vue App</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+        integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="app" class="container">
+        <h2>
+            To Do!
+            <span class="info">({{moment(new Date).format('YYYY/MM/DD HH:mm')}})</span>
+            <v-progress-circular class="progress-circle" :rotate="360" :size="100" :width="15" :value="progressNum"
+                color="teal">
+                {{progressNum}}
+            </v-progress-circular>
+            <i class="fas fa-trash-alt" style="color: orange;" @click="purge"></i>
+            <i class="fas fa-filter" style="color: deepskyblue;" @click="sortByCategory"></i>
+        </h2>
+        <draggable tag="ul">
+            <li v-for="(todo,index) in todos" :key="todo.index">
+                <span id="todo.id" @click="todo.id = selectDeadline(todo.id)" class="deadline"
+                    v-bind:class="{'today': todo.id === 0, 'private': todo.id === 1, 'this-sp': todo.id === 2, 'next-sp': todo.id === 3, 'someday': todo.id === 4}">{{todo.selected[todo.id]}}</span>
+                <input type="checkbox" v-model="todo.isDone">
+                <label for="todo.checkId"></label>
+                <span :class="{done:todo.isDone}">{{todo.title}}</span>
+                <span @click="deleteItem(index)" class="command"><i class="fas fa-feather-alt"></i></span>
+            </li>
+            <li v-show="!todos.length">You Finished!!</li>
+        </draggable>
+        <form @submit.prevent="addItem">
+            <input class="add-input" type="text" v-model="newItem">
+            <input class="add-btn" type="submit" value="Add">
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <!-- ServiceWorkerの登録 -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.23.2/vuedraggable.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/locale/ja.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
